@@ -1,125 +1,37 @@
-@interface SBUICallToActionLabel : UIView {
-
-	NSString* _text;
-
-}
-@property (nonatomic, copy, readwrite) NSString * text; 
+@interface SBUICallToActionLabel : UIView //Inherits from UIView, so any UIView method will work
 - (void)setText:(NSString *)arg1 ;
-- (NSString *)text;
 @end
 
-%hook SBUICallToActionLabel
+%hook SBUICallToActionLabel //Hook the class
 	
-- (void)fadeIn {
+- (void)fadeIn { // This is called when the screen is woken and label fades in
 
 	%orig;
 
-	UIDevice *device = [UIDevice currentDevice];
+	UIDevice *device = [UIDevice currentDevice]; // Get current device
 
-	[device setBatteryMonitoringEnabled:YES];
+	[device setBatteryMonitoringEnabled:YES]; // Set this to true to grab battery percentage
 
-	double percentage = (float)[device batteryLevel] * 100;
+	double percentage = (float)[device batteryLevel] * 100; // Multiply by 100 to get a readable float
 
-	NSLog(@"%.f", percentage);
+	NSString *charging; // Create empty string in memory
 
-	NSString *charging;
-
-	UIDeviceBatteryState deviceBatteryState = [UIDevice currentDevice].batteryState;
+	UIDeviceBatteryState deviceBatteryState = [UIDevice currentDevice].batteryState; // Get the current state of the battery
 	
 	if (deviceBatteryState == UIDeviceBatteryStateCharging || deviceBatteryState == UIDeviceBatteryStateFull) {
     
-		charging = @"Charging: ";
+		charging = @"Charging: "; // First part
 
 	} else {
 
-		charging = @"Not charging: ";
+		charging = @"Not charging: "; // First part
 
 	}
 
-	NSString *final = [NSString stringWithFormat:@"%@%.f%%", charging, percentage];
+	NSString *final = [NSString stringWithFormat:@"%@%.f%%", charging, percentage]; // Final part
 
-	[self setText:final];
+	[self setText:final]; // Set the text
 
 }
-
-/* - (void)didMoveToSuperview {
-
-	%orig;
-
-	NSString *newText = MSHookIvar<NSString *>(self, "_text");
-
-	newText = @"Test";
-
-	self.text = @"Test2";
-
-	//
-
-	UIDevice *device = [UIDevice currentDevice];
-
-	[device setBatteryMonitoringEnabled:YES];
-
-	double percentage = (float)[device batteryLevel] * 100;
-
-	NSLog(@"%.f", percentage);
-
-	NSString *charging;
-
-	UIDeviceBatteryState deviceBatteryState = [UIDevice currentDevice].batteryState;
-	
-	if (deviceBatteryState == UIDeviceBatteryStateCharging || deviceBatteryState == UIDeviceBatteryStateFull) {
-    
-		charging = @"Charging: ";
-
-	} else {
-
-		charging = @"Not charging: ";
-
-	}
-
-	NSString *final = [NSString stringWithFormat:@"%@%.f%%", charging, percentage];
-
-	[self setText:final];
-
-} */
-	
-/* - (void)sizeToFit {
-
-	%orig;
-
-	NSString *newText = MSHookIvar<NSString *>(self, "_text");
-
-	newText = @"Test";
-
-	self.text = @"Test2";
-
-	//
-
-	UIDevice *device = [UIDevice currentDevice];
-
-	[device setBatteryMonitoringEnabled:YES];
-
-	double percentage = (float)[device batteryLevel] * 100;
-
-	NSLog(@"%.f", percentage);
-
-	NSString *charging;
-
-	UIDeviceBatteryState deviceBatteryState = [UIDevice currentDevice].batteryState;
-	
-	if (deviceBatteryState == UIDeviceBatteryStateCharging || deviceBatteryState == UIDeviceBatteryStateFull) {
-    
-		charging = @"Charging: ";
-
-	} else {
-
-		charging = @"Not charging: ";
-
-	}
-
-	NSString *final = [NSString stringWithFormat:@"%@%.f%%", charging, percentage];
-
-	[self setText:final];
-
-} */
 
 %end

@@ -1,9 +1,9 @@
 Package: com.mtac.lockcharge
 Name: LockCharge
 Depends: mobilesubstrate
-Version: 0.0.1
+Version: 1.0.0
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: Check if your device is charging easily from your lockscreen
 Maintainer: MTAC
 Author: MTAC
 Section: Tweaks
